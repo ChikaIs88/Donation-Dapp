@@ -1,0 +1,7 @@
+{
+  "hosting": {
+    "site": "donation-m-dapp",
+    "public": "build/web",
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"]
+  }
+}
