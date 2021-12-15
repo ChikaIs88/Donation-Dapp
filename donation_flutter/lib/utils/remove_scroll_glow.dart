@@ -7,3 +7,4 @@ class RemoveScrollGlow extends ScrollBehavior {
     return child;
   }
 }
+  

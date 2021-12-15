@@ -15,9 +15,9 @@ final contract = DeployedContract(
     ContractAbi.fromJson(jsonEncode(abi), 'Donation'), contractAddr);
 
 class Web3Service {
-  final getPlayersFunction = contract.function('getPlayers');
-  final getCurrentWinnerFunction = contract.function('getCurrentWinner');
+  final getDonatorsFunction = contract.function('getPlayers');
+  final getCurrentRecipientFunction = contract.function('getCurrentWinner');
   final enterFunction = contract.function('enter');
   final managerFunction = contract.function('manager');
-  final pickWinnerFunction = contract.function('pickWinner');
+  final pickRecipientFunction = contract.function('pickWinner');
 }
