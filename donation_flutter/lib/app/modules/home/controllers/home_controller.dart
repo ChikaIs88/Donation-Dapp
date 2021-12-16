@@ -26,12 +26,12 @@ class HomeController extends GetxController with SingleGetTickerProviderMixin {
   final privateKey = ''.obs;
   final contractBalance = ''.obs;
   final userBalance = ''.obs;
-  final lastWinner = ''.obs;
+  final lastRecipient = ''.obs;
   final name = ''.obs;
   final message = ''.obs;
   final loading = false.obs;
   final check = true.obs;
-  final players = [].obs;
+  final donators = [].obs;
   final users = <User>[].obs;
 
   Future<void> getManager() async {
@@ -42,13 +42,13 @@ class HomeController extends GetxController with SingleGetTickerProviderMixin {
     loading.value = false;
   }
 
-  Future<void> getLastWinner() async {
+  Future<void> getLastRecipient() async {
     loading.value = true;
-    final winner = await client.call(
+    final recipient = await client.call(
         contract: contract,
-        function: web3Service.getCurrentWinnerFunction,
+        function: web3Service.getCurrentRecipientFunction,
         params: []);
-    lastWinner.value = '${winner.first}';
+    lastRecipient.value = '${recipient.first}';
     loading.value = false;
   }
 
@@ -59,14 +59,14 @@ class HomeController extends GetxController with SingleGetTickerProviderMixin {
     loading.value = false;
   }
 
-  Future<void> getPlayers() async {
+  Future<void> getDonators() async {
     loading.value = true;
-    final currentPlayers = await client.call(
+    final currentDonators = await client.call(
         contract: contract,
-        function: web3Service.getPlayersFunction,
+        function: web3Service.getDonatorsFunction,
         params: []);
-    if (currentPlayers.isNotEmpty) {
-      players.assignAll(currentPlayers.first);
+    if (currentDonators.isNotEmpty) {
+      donators.assignAll(currentDonators.first);
     }
     loading.value = false;
   }
@@ -153,21 +153,21 @@ class HomeController extends GetxController with SingleGetTickerProviderMixin {
     }
   }
 
-  Future<void> pickWinner() async {
+  Future<void> pickRecipient() async {
     loading.value = true;
-    message.value = 'Picking winner, please wait!';
+    message.value = 'Picking recipient, please wait!';
     try {
       await client.sendTransaction(
           walletService.credentials!,
           Transaction.callContract(
             contract: contract,
             from: EthereumAddress.fromHex(userAddress.value),
-            function: web3Service.pickWinnerFunction,
+            function: web3Service.pickRecipientFunction,
             parameters: [],
           ),
           chainId: 4);
-      await getLastWinner();
-      message.value = 'Winner: ${lastWinner.value} ';
+      await getLastRecipient();
+      message.value = 'donators: ${lastRecipient.value} ';
     } catch (e) {
       message.value = 'An error occurred: $e';
       Get.rawSnackbar(message: 'Error: $e');
@@ -190,8 +190,8 @@ class HomeController extends GetxController with SingleGetTickerProviderMixin {
 
   Future<void> reloadContract() async {
     await getDonationBalance();
-    await getPlayers();
-    await getLastWinner();
+    await getDonators();
+    await getLastRecipient();
     await initWallet();
   }
 
@@ -229,9 +229,9 @@ class HomeController extends GetxController with SingleGetTickerProviderMixin {
     await loadUsers();
     await generateSvg();
     await getManager();
-    await getPlayers();
+    await getDonators();
     await getDonationBalance();
-    await getLastWinner();
+    await getLastRecipient();
     nameController.addListener(() {
       name.value = nameController.text;
     });

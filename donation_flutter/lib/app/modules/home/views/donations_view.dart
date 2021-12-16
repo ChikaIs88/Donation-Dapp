@@ -71,7 +71,7 @@ class DonationView extends StatelessWidget {
                     ),
                     subtitle: Obx(
                       () => Text(
-                        '${homeController.players.length}',
+                        '${homeController.donators.length}',
                       ),
                     ),
                   ),
@@ -81,12 +81,12 @@ class DonationView extends StatelessWidget {
                       color: primaryColor,
                     ),
                     title: const Text(
-                      'Last Winner',
+                      'Last donators',
                       style: bodySemiBold,
                     ),
                     subtitle: Obx(
                       () => Text(
-                        '${homeController.lastWinner.value} ',
+                        '${homeController.lastRecipient.value} ',
                       ),
                     ),
                   ),
@@ -176,13 +176,13 @@ class DonationView extends StatelessWidget {
                             homeController.userAddress.value ==
                                 homeController.managerAddress.value
                         ? MaterialButton(
-                            onPressed: homeController.pickWinner,
+                            onPressed: homeController.pickRecipient,
                             color: secondaryColor,
                             textColor: Colors.white,
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(32)),
                             child: const Text(
-                              'Pick Winner',
+                              'Pick donators',
                               style: bodySemiBold,
                             ).paddingAll(12),
                           ).paddingSymmetric(vertical: 16, horizontal: 16)
